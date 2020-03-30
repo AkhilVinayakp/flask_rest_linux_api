@@ -21,7 +21,14 @@ def resolve():
     proc = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     stdout, stderr = proc.communicate()
     stdout = str(stdout).replace('\\n', '<br>')
-    return "command <br>{} output <br> {} <br>error<br> {} ".format(cmd,stdout,stderr)
+    stderr=str(stderr)
+    #return "command <br>{} output <br> {} <br>error<br> {} ".format(cmd,stdout,stderr)
+    return jsonify(
+        {
+            'output': stdout,
+            'error': stderr
+        }
+    )
 
 
 api.add_resource(Hello_world, '/')
