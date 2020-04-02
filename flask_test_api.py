@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, jsonify
 
 app = Flask(__name__)
 '''
@@ -19,9 +19,24 @@ app = Flask(__name__)
     POST /store/<string:name>/item  takes the item data about a specific store {name:,prince:}
     GET /store/<string:name>/item   gives info about the items in the specific store
 
-
+    notes::::::::::::::
+    jsonify : make json from a python dictionary
 
 '''
+# creating the store
+store = [
+    {
+     'name': 'my_dream_store',
+     'items':
+        [
+            {
+                'name': 'item1',
+                'price': 4.63
+            }
+        ]
+
+    }
+]
 
 
 # POST /store {data :name} create a store
@@ -33,17 +48,17 @@ def create_store():
 # GET /store   : list all available stores
 @app.route('/store', methods=['GET'])
 def store_data():
-    pass
+    return jsonify({'stores': store})
 
 
 # GET /store/<string:name> give data about a specific store
-@app.route('/store/<string:name')
+@app.route('/store/<string:name>')
 def store_sp_data(name):
     pass
 
 
 # POST /store/<string:name>/item  takes the item data about a specific store {name:,prince:}
-@app.route('/store/<string:name>/item', methods= ['POST'])
+@app.route('/store/<string:name>/item', methods=['POST'])
 def get_item_store(name):
     pass
 
