@@ -69,7 +69,16 @@ def store_sp_data(name):
 # POST /store/<string:name>/item  takes the item data about a specific store {name:,prince:}
 @app.route('/store/<string:name>/item', methods=['POST'])
 def get_item_store(name):
-    pass
+    request_data = request.get_json()
+    for i in store:
+        if i['store'] == name:
+            new_item = {
+                'name': request_data['name'],
+                'price': request_data['price']
+            }
+            i['items'].append(new_item)
+            return jsonify({'stores': store})
+    return jsonify({'message': "not found"})
 
 
 # GET /store/<string:name>/item   gives info about the items in the specific store
@@ -77,7 +86,7 @@ def get_item_store(name):
 def pass_item_store(name):
     for i in store:
         if i['name'] == name:
-            return jsonify({'store': name, 'items': i['items']})
+            return jsonify({'items': i['items']})
     return jsonify({'message': "can not find the store specified"})
 
 
