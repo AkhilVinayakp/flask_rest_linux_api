@@ -1,4 +1,4 @@
-from flask import Flask, jsonify
+from flask import Flask, jsonify, request
 
 app = Flask(__name__)
 '''
@@ -42,7 +42,13 @@ store = [
 # POST /store {data :name} create a store
 @app.route('/store', methods=['POST'])
 def create_store():
-    pass
+    request_data = request.get_json()
+    new_store = {
+        'name': request_data['name'],
+        'items': []
+    }
+    store.append(new_store)
+    return jsonify({'store': store})
 
 
 # GET /store   : list all available stores
@@ -54,7 +60,10 @@ def store_data():
 # GET /store/<string:name> give data about a specific store
 @app.route('/store/<string:name>')
 def store_sp_data(name):
-    pass
+    for i in store:
+        if name == i['name']:
+            return jsonify({'store': i})
+    return jsonify({'message': 'no store found'})
 
 
 # POST /store/<string:name>/item  takes the item data about a specific store {name:,prince:}
@@ -66,7 +75,10 @@ def get_item_store(name):
 # GET /store/<string:name>/item   gives info about the items in the specific store
 @app.route('/store/<string:name>/item')
 def pass_item_store(name):
-    pass
+    for i in store:
+        if i['name'] == name:
+            return jsonify({'store': name, 'items': i['items']})
+    return jsonify({'message': "can not find the store specified"})
 
 
 app.run(port=5500)
