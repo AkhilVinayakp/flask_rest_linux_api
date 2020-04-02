@@ -8,16 +8,26 @@ from flask_restful import Resource, Api
     1.show all items
         endpoint : /items
     2.add an item
-        endpoint : /items       method :POST
+        endpoint : /item/<name>       method :POST
         data :{
         
         }
     3.show a specific item
-        endpoint : /items/<name> method :GET
+        endpoint : /item/<name> method :GET
     4.delete a specific item
-        endpoint : /items/<name>  method : DEL
+        endpoint : /item/<name>  method : DEL
     5.update a specific item
         endpoint : /item/<name> method : PUT
         data = {}   
 
 '''
+app = Flask(__name__)
+api = Api(app)
+#creating the versatile database
+items = [
+
+]
+
+class item(Resource):
+    def get(self, name):
+        pass

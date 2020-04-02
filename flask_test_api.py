@@ -71,7 +71,7 @@ def store_sp_data(name):
 def get_item_store(name):
     request_data = request.get_json()
     for i in store:
-        if i['store'] == name:
+        if i['name'] == name:
             new_item = {
                 'name': request_data['name'],
                 'price': request_data['price']
