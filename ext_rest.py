@@ -1,5 +1,6 @@
-from flask import Flask, jsonify
+from flask import Flask, request
 from flask_restful import Resource, Api
+
 '''
     section description>>>>>>>>>>>>>>>>>>>>>>>>>>
     
@@ -23,11 +24,36 @@ from flask_restful import Resource, Api
 '''
 app = Flask(__name__)
 api = Api(app)
-#creating the versatile database
+# creating the versatile database
 items = [
 
 ]
 
-class item(Resource):
-    def get(self, name):
+
+class Item(Resource):
+    def get(self, name):  # return the specific item only
+        for i in items:
+            if i['name'] == name:
+                return i
+        return 'not found', 404
+
+    def post(self, name):
+        try:
+            data = request.get_json()
+            items.append({'name': name, 'price': data['price']})
+            return True, 201
+        except Exception:
+            return False, 404
+
+    def put(self, name):
         pass
+
+
+class Items(Resource):
+    def get(self):
+        return items
+
+
+api.add_resource(Item, '/item/<string:name>')
+api.add_resource(Items, '/items')
+app.run(port=5400, debug=True)
