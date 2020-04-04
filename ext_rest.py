@@ -30,6 +30,10 @@ items = [
 ]
 
 
+class AlreadyExist(Exception):
+    pass
+
+
 class Item(Resource):
     def get(self, name):  # return the specific item only
         for i in items:
@@ -39,9 +43,13 @@ class Item(Resource):
 
     def post(self, name):
         try:
+            if next(filter(lambda x: x['name'] == name, items), None):
+                raise AlreadyExist()
             data = request.get_json()
             items.append({'name': name, 'price': data['price']})
             return True, 201
+        except AlreadyExist:
+            return None, 400
         except Exception:
             return False, 404
 
