@@ -69,11 +69,13 @@ class Item(Resource):
     # method to delete an item in the list
 
     def delete(self, name):
+        global items
         rmd_item = next(filter(lambda x: safe_str_cmp(x['name'], name), items), None)
-        if rmd_item is None:
+        if rmd_item is not None:
+            items = items.remove(rmd_item)
             return {'message': "Item with name {} removed".format(name)}
         else:
-            return {'message': "There is not item with the name{}".format(name)}
+            return {'message': "There is not item with the name{} ".format(name)}
 
 
 class Items(Resource):
