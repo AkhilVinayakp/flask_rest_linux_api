@@ -3,6 +3,7 @@ from flask_restful import Resource, Api
 # adding the security options
 from flask_jwt import JWT, jwt_required
 from security import authenticate, identity
+from werkzeug.security import safe_str_cmp
 
 '''
     section description>>>>>>>>>>>>>>>>>>>>>>>>>>
@@ -44,7 +45,6 @@ class AlreadyExist(Exception):
 
 
 class Item(Resource):
-    @jwt_required()
     def get(self, name):  # return the specific item only
         for i in items:
             if i['name'] == name:
@@ -66,9 +66,17 @@ class Item(Resource):
     def put(self, name):
         pass
 
+    # method to delete an item in the list
+
+    def delete(self, name):
+        rmd_item = next(filter(lambda x: safe_str_cmp(x['name'], name), items), None)
+        if rmd_item is None:
+            return {'message': "Item with name {} removed".format(name)}
+        else:
+            return {'message': "There is not item with the name{}".format(name)}
+
 
 class Items(Resource):
-    @jwt_required()
     def get(self):
         return items
 
