@@ -64,7 +64,13 @@ class Item(Resource):
             return False, 404
 
     def put(self, name):
-        pass
+        data = request.get_json()
+        item = next(filter(lambda x: safe_str_cmp(x['name'], name), items), None)
+        if item is None:
+            items.append({'name': name, 'price': data['price']})
+        else:
+            item.update(data)
+        return item
 
     # method to delete an item in the list
 
