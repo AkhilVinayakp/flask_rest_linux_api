@@ -1,5 +1,5 @@
 from flask import Flask, request
-from flask_restful import Resource, Api
+from flask_restful import Resource, Api, reqparse
 # adding the security options
 from flask_jwt import JWT, jwt_required
 from security import authenticate, identity
@@ -64,7 +64,12 @@ class Item(Resource):
             return False, 404
 
     def put(self, name):
-        data = request.get_json()
+        parser = reqparse.RequestParser()
+        parser.add_argument('price',
+                            type=float,
+                            required=True,
+                            help="this field required")
+        data = parser.parse_args()
         item = next(filter(lambda x: safe_str_cmp(x['name'], name), items), None)
         if item is None:
             items.append({'name': name, 'price': data['price']})
