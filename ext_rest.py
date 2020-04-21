@@ -1,5 +1,8 @@
 from flask import Flask, request
 from flask_restful import Resource, Api
+# adding the security options
+from flask_jwt import JWT, jwt_required
+from security import authenticate, identity
 
 '''
     section description>>>>>>>>>>>>>>>>>>>>>>>>>>
@@ -23,11 +26,17 @@ from flask_restful import Resource, Api
 
 '''
 app = Flask(__name__)
+
+# adding the secret key option to out app
+app.secret_key = 'kia'
 api = Api(app)
 # creating the versatile database
 items = [
 
 ]
+
+# initializing JWT
+jwt = JWT(app, authenticate, identity)  # create an /auth end point
 
 
 class AlreadyExist(Exception):
@@ -35,6 +44,7 @@ class AlreadyExist(Exception):
 
 
 class Item(Resource):
+    @jwt_required()
     def get(self, name):  # return the specific item only
         for i in items:
             if i['name'] == name:
@@ -58,6 +68,7 @@ class Item(Resource):
 
 
 class Items(Resource):
+    @jwt_required()
     def get(self):
         return items
 
