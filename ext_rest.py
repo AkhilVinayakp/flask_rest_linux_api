@@ -72,8 +72,8 @@ class Item(Resource):
         global items
         rmd_item = next(filter(lambda x: safe_str_cmp(x['name'], name), items), None)
         if rmd_item is not None:
-            items = items.remove(rmd_item)
-            return {'message': "Item with name {} removed".format(name)}
+            items.remove(rmd_item)
+            return {'message': "Item with name {} removed".format(rmd_item)}
         else:
             return {'message': "There is not item with the name{} ".format(name)}
 
