@@ -20,4 +20,13 @@ class Users:
         else:
             return None
 
-
+    @classmethod
+    def find_by_id(cls, _id):
+        connection = sqlite3.connect('test.db')
+        cursor = connection.cursor()
+        row = cursor.execute('select * from test where id=?', (_id,)).fetchone()
+        connection.close()
+        if row:
+            return cls(*row)
+        else:
+            return None
